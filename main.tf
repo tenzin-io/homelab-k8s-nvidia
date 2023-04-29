@@ -14,7 +14,7 @@ module "cert_manager" {
 }
 
 module "github_actions" {
-  source                     = "git::https://github.com/tenzin-io/terraform-tenzin-github-actions-runner-controller.git?ref=main"
+  source                     = "git::https://github.com/tenzin-io/terraform-tenzin-github-actions-runner-controller.git?ref=v0.1.0"
   github_org_name            = "tenzin-io"
   github_app_id              = data.vault_generic_secret.github_app.data.app_id
   github_app_installation_id = data.vault_generic_secret.github_app.data.installation_id
@@ -25,5 +25,5 @@ module "github_actions" {
 }
 
 module "nvidia_device_plugin" {
-  source = "git::https://github.com/tenzin-io/terraform-tenzin-nvidia-device-plugin.git?ref=main"
+  source = "git::https://github.com/tenzin-io/terraform-tenzin-nvidia-device-plugin.git?ref=v0.1.0"
 }
