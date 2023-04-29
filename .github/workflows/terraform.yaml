@@ -1,10 +1,10 @@
-name: Terraform Validate and Plan
+name: Terraform
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    paths:
+      - '**/*.tf'
   workflow_dispatch:
   
 permissions:
@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  validate-and-plan:
     runs-on: [self-hosted, homelab, nvidia]
 
     steps:
@@ -21,15 +21,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-
-      - uses: hashicorp/vault-action@v2
-        id: vault_secrets
-        with:
-          url: https://vault.tenzin.io
-          role: ${{ vars.VAULT_ROLE }}
-          method: jwt
-          exportToken: true
-
+      
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -53,3 +45,33 @@ jobs:
 
       - name: Run Terraform Plan
         run: terraform plan -no-color
+
+  apply:
+    needs: [validate-and-plan]
+    runs-on: [self-hosted, homelab]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+
+      - name: Setup secrets
+        run: |-
+          cat <<'eof' > kubernetes-admin.conf
+          ${{ secrets.KUBERNETES_ADMIN_CONF }}
+          eof
+
+      - name: Run Terraform Init
+        run: terraform init
+
+      - name: Run Terraform Apply
+        run: terraform apply -no-color -auto-approve
+
