@@ -24,5 +24,5 @@ module "github_actions" {
 }
 
 module "nvidia_device_plugin" {
-  source = "git::https://github.com/tenzin-io/terraform-tenzin-nvidia-device-plugin.git?ref=v0.0.1"
+  source = "git::https://github.com/tenzin-io/terraform-tenzin-nvidia-device-plugin.git?ref=main"
 }
