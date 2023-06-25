@@ -20,7 +20,7 @@ module "github_actions" {
   github_app_installation_id = data.vault_generic_secret.github_app.data.installation_id
   github_app_private_key     = data.vault_generic_secret.github_app.data.private_key
   github_runner_labels       = ["homelab", "nvidia"]
-  github_runner_image        = "containers.tenzin.io/docker/tenzin-io/nvidia-actions-runner-image:latest"
+  github_runner_image        = "containers.tenzin.io/docker/tenzin-io/actions-runner-images/nvidia-latest:main"
   enable_nvidia_gpu          = true
 }
 

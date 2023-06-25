@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   validate-and-plan:
-    runs-on: [self-hosted, homelab, v1]
+    runs-on: [self-hosted, homelab, nvidia]
 
     steps:
       - uses: actions/checkout@v3
@@ -29,6 +29,14 @@ jobs:
           role: ${{ vars.VAULT_ROLE_TO_ASSUME }}
           method: jwt
           exportToken: true
+          secrets: |
+            github/data/homelab-k8s-nvidia kubernetes_admin_conf | KUBERNETES_ADMIN_CONF ;
+
+      - name: Setup kubernetes-admin.conf
+        run: |-
+          cat <<'eof' > kubernetes-admin.conf
+          ${{ steps.vault_secrets.outputs.KUBERNETES_ADMIN_CONF }}
+          eof
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -36,12 +44,6 @@ jobs:
           role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
-      - name: Setup secrets
-        run: |-
-          cat <<'eof' > kubernetes-admin.conf
-          ${{ secrets.KUBERNETES_ADMIN_CONF }}
-          eof
- 
       - name: Run Terraform Init
         run: terraform init
         
@@ -56,7 +58,7 @@ jobs:
 
   apply:
     needs: [validate-and-plan]
-    runs-on: [self-hosted, homelab]
+    runs-on: [self-hosted, homelab, nvidia]
 
     steps:
       - uses: actions/checkout@v3
@@ -72,18 +74,20 @@ jobs:
           role: ${{ vars.VAULT_ROLE_TO_ASSUME }}
           method: jwt
           exportToken: true
+          secrets: |
+            github/data/homelab-k8s-nvidia kubernetes_admin_conf | KUBERNETES_ADMIN_CONF ;
+
+      - name: Setup kubernetes-admin.conf
+        run: |-
+          cat <<'eof' > kubernetes-admin.conf
+          ${{ steps.vault_secrets.outputs.KUBERNETES_ADMIN_CONF }}
+          eof
           
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
           aws-region: us-east-1
-
-      - name: Setup secrets
-        run: |-
-          cat <<'eof' > kubernetes-admin.conf
-          ${{ secrets.KUBERNETES_ADMIN_CONF }}
-          eof
 
       - name: Run Terraform Init
         run: terraform init
