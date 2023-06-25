@@ -8,7 +8,7 @@ A Terraform configuration repository to manage my home lab Kubernetes cluster wi
 
 | Name | Version |
 |------|---------|
-| <a name="provider_vault"></a> [vault](#provider\_vault) | 3.15.0 |
+| <a name="provider_vault"></a> [vault](#provider\_vault) | 3.17.0 |
 
 ## Modules
 
