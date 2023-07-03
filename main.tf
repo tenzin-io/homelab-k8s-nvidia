@@ -14,13 +14,13 @@ module "cert_manager" {
 }
 
 module "github_actions" {
-  source                     = "git::https://github.com/tenzin-io/terraform-tenzin-github-actions-runner-controller.git?ref=v0.1.0"
+  source                     = "git::https://github.com/tenzin-io/terraform-tenzin-github-actions-runner-controller.git?ref=v0.2.0"
   github_org_name            = "tenzin-io"
   github_app_id              = data.vault_generic_secret.github_app.data.app_id
   github_app_installation_id = data.vault_generic_secret.github_app.data.installation_id
   github_app_private_key     = data.vault_generic_secret.github_app.data.private_key
   github_runner_labels       = ["homelab", "nvidia"]
-  github_runner_image        = "containers.tenzin.io/docker/tenzin-io/actions-runner-images/nvidia-latest:v0.0.1"
+  github_runner_image        = "containers.tenzin.io/docker/tenzin-io/actions-runner-images/nvidia-latest:v0.0.4"
   enable_nvidia_gpu          = true
 }
 

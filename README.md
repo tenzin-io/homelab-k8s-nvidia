@@ -15,7 +15,7 @@ A Terraform configuration repository to manage my home lab Kubernetes cluster wi
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cert_manager"></a> [cert\_manager](#module\_cert\_manager) | git::https://github.com/tenzin-io/terraform-tenzin-cert-manager.git | v0.0.2 |
-| <a name="module_github_actions"></a> [github\_actions](#module\_github\_actions) | git::https://github.com/tenzin-io/terraform-tenzin-github-actions-runner-controller.git | v0.1.0 |
+| <a name="module_github_actions"></a> [github\_actions](#module\_github\_actions) | git::https://github.com/tenzin-io/terraform-tenzin-github-actions-runner-controller.git | v0.2.0 |
 | <a name="module_nvidia_device_plugin"></a> [nvidia\_device\_plugin](#module\_nvidia\_device\_plugin) | git::https://github.com/tenzin-io/terraform-tenzin-nvidia-device-plugin.git | v0.1.0 |
 
 ## Resources
